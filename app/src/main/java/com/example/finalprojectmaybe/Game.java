@@ -5,11 +5,14 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -23,23 +26,25 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
     private final Balloon balloon;
     //  private final RedBalloon RedBalloon;
     private GameLoop gameLoop;
+    private Bitmap map;
 
-    Drawable d;
-    Bitmap bitmap;
 
     public Game(Context context) {
         super(context);
+
 
         SurfaceHolder surfaceHolder = getHolder();
         surfaceHolder.addCallback(this);
 
         gameLoop = new GameLoop(this, surfaceHolder);
 
-        balloon = new Balloon(500,500,100,context);
+        balloon = new Balloon(-getScreenWidth()/50,((int)(getScreenHeight()/2.45)),getScreenWidth()/60,context);
         player = new Player(getContext(), 500,500,30);
 
+        map = BitmapFactory.decodeResource(context.getResources(), R.drawable.map);
+        map= Bitmap.createScaledBitmap(map, getScreenWidth(), getScreenHeight(), false);
 
-
+        Toast.makeText(context, "yep" + balloon.getCenterPositionY(), Toast.LENGTH_LONG).show();
 
         //   RedBalloon = new RedBalloon();
         setFocusable(true);
@@ -80,9 +85,12 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         super.draw(canvas);
         drawUPS(canvas);
         drawFPS(canvas);
-
+        canvas.drawBitmap(map, 0, 0, null);
         balloon.draw(canvas);
         player.draw(canvas);
+
+
+
     }
 
     public void drawUPS(Canvas canvas){
@@ -107,5 +115,13 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         //Update game state
         player.update();
         balloon.update();
+    }
+    public static int getScreenWidth() {
+        return Resources.getSystem().getDisplayMetrics().widthPixels;
+    }
+
+    public static int getScreenHeight() {
+        return Resources.getSystem().getDisplayMetrics().heightPixels;
+
     }
 }
