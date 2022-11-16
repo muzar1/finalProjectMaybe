@@ -40,9 +40,9 @@ public class Balloon {
     public void update(){
         if(!mapPart1finished) //if the balloon didn't finish the 1st part of the map (before the merge)
             firstLinePart();
-        else if(!mapPart2finished)
+        else if(!mapPart2finished) //"" second ""
             secondLinePart();
-        else if(!mapPart3finished)
+        else if(!mapPart3finished) // "" third ""
             thirdLinePart();
     }
 
