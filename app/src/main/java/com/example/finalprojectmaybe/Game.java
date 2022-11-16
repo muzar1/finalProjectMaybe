@@ -83,9 +83,10 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
     @Override
     public void draw(Canvas canvas) {
         super.draw(canvas);
+
+        canvas.drawBitmap(map, 0, 0, null);
         drawUPS(canvas);
         drawFPS(canvas);
-        canvas.drawBitmap(map, 0, 0, null);
         balloon.draw(canvas);
         player.draw(canvas);
 
