@@ -112,10 +112,10 @@ public class Balloon {
         if (centerPositionX > getScreenWidth() / 1.35 && centerPositionX < getScreenWidth() / 1.27 && centerPositionY > getScreenHeight() / 3.1 && centerPositionY < getScreenHeight() / 1.38) {
             centerPositionY += getScreenHeight() / 247;
         }
-        if (centerPositionX > getScreenWidth() / 2.23 && centerPositionX < getScreenWidth() / 1.27 && centerPositionY > getScreenHeight() / 1.43 && centerPositionY < getScreenHeight() / 1.33) {
+        if (centerPositionX > getScreenWidth() / 2.24 && centerPositionX < getScreenWidth() / 1.27 && centerPositionY > getScreenHeight() / 1.43 && centerPositionY < getScreenHeight() / 1.3) {
             centerPositionX -= getScreenWidth()/ 400;
         }
-        if (centerPositionX > getScreenWidth() / 2.28 && centerPositionX < getScreenWidth() / 2.18 && centerPositionY > getScreenHeight() / 1.43 && centerPositionY < getScreenHeight() / 1) {
+        if (centerPositionX > getScreenWidth() / 2.28 && centerPositionX < getScreenWidth() / 2.15 && centerPositionY > getScreenHeight() / 1.43 && centerPositionY < getScreenHeight() / 1) {
             centerPositionY += getScreenHeight() / 247;
         }
     }
