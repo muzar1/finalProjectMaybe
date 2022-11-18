@@ -3,14 +3,10 @@ package com.example.finalprojectmaybe;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
-import android.widget.Toast;
 
-public class Balloon {
-
+public class BalloonHandler {
     protected int centerPositionX;
     protected int centerPositionY;
     protected int radius;
@@ -25,7 +21,7 @@ public class Balloon {
     Boolean mapPart2finished=false;
     Boolean mapPart1finished=false;
 
-    public Balloon(int centerPositionX, int centerPositionY, int radius, Context context, Bitmap texture, int width, int height){
+    public BalloonHandler(int centerPositionX, int centerPositionY, int radius, Context context, Bitmap texture, int width, int height){
         this.centerPositionX=centerPositionX;
         this.centerPositionY=centerPositionY;
         this.radius=radius;
@@ -122,4 +118,3 @@ public class Balloon {
         }
     }
 }
-

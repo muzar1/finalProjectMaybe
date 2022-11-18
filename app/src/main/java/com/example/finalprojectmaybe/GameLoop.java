@@ -55,8 +55,6 @@ public class GameLoop extends Thread{
 
                     game.draw(canvas);
                 }
-
-
             } catch (IllegalArgumentException e) {
                 e.printStackTrace();
             } finally {
@@ -68,10 +66,7 @@ public class GameLoop extends Thread{
                         e.printStackTrace();
                     }
                 }
-
             }
-
-
 
 
             //Pause game Loop to not exceed target UPS

@@ -5,10 +5,8 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
+import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -23,28 +21,39 @@ import androidx.core.content.ContextCompat;
  */
 public class Game extends SurfaceView implements SurfaceHolder.Callback{
     private final Player player;
-    private final Balloon balloon;
-    //  private final RedBalloon RedBalloon;
+    private final RedBalloon redBalloon;
+    private final BlueBalloon blueBalloon;
+    private final RedBalloon[] round1;
     private GameLoop gameLoop;
     private Bitmap map;
-
+    private Context context;
+    private static Handler handler1;
 
     public Game(Context context) {
         super(context);
-
+        this.context=context;
 
         SurfaceHolder surfaceHolder = getHolder();
         surfaceHolder.addCallback(this);
 
         gameLoop = new GameLoop(this, surfaceHolder);
 
-        balloon = new Balloon(-getScreenWidth()/50,((int)(getScreenHeight()/2.45)),getScreenWidth()/60,context);
+        round1 = new RedBalloon[5];
+
+        for (int i=0; i<5;i ++)
+        {
+            round1[i] = new RedBalloon((int)(i+1)*4* (-getScreenWidth()/(50)),((int)(getScreenHeight()/2.45)),getScreenWidth()/60,context, BitmapFactory.decodeResource(context.getResources(), R.drawable.red_balloon));
+        }
+
+        redBalloon = new RedBalloon(-getScreenWidth()/50,((int)(getScreenHeight()/2.45)),getScreenWidth()/60,context, BitmapFactory.decodeResource(context.getResources(), R.drawable.red_balloon));
+        blueBalloon = new BlueBalloon(-getScreenWidth()/5,((int)(getScreenHeight()/2.45)),getScreenWidth()/60,context, BitmapFactory.decodeResource(context.getResources(), R.drawable.blue_balloon));
+
         player = new Player(getContext(), 500,500,30);
 
         map = BitmapFactory.decodeResource(context.getResources(), R.drawable.map);
         map= Bitmap.createScaledBitmap(map, getScreenWidth(), getScreenHeight(), false);
 
-        Toast.makeText(context, "yep" + balloon.getCenterPositionY(), Toast.LENGTH_LONG).show();
+        Toast.makeText(context, "yep" + redBalloon.getCenterPositionY(), Toast.LENGTH_LONG).show();
 
         //   RedBalloon = new RedBalloon();
         setFocusable(true);
@@ -87,9 +96,15 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         canvas.drawBitmap(map, 0, 0, null);
         drawUPS(canvas);
         drawFPS(canvas);
-        balloon.draw(canvas);
-        player.draw(canvas);
 
+        for(int i=0 ;i<5; i++) {
+            round1[i].draw(canvas);
+        }
+
+
+        redBalloon.draw(canvas);
+        blueBalloon.draw(canvas);
+        player.draw(canvas);
 
 
     }
@@ -115,7 +130,13 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
     public void update() {
         //Update game state
         player.update();
-        balloon.update();
+        redBalloon.update();
+        blueBalloon.update();
+
+        for (int i=0; i<5;i ++)
+        {
+            round1[i].update();
+        }
     }
     public static int getScreenWidth() {
         return Resources.getSystem().getDisplayMetrics().widthPixels;
@@ -123,6 +144,6 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
 
     public static int getScreenHeight() {
         return Resources.getSystem().getDisplayMetrics().heightPixels;
-
     }
+
 }
