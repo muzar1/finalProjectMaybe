@@ -1,4 +1,4 @@
-package com.example.finalprojectmaybe;
+package _GameMechanics;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -15,6 +15,12 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 
+import com.example.finalprojectmaybe.Player;
+import com.example.finalprojectmaybe.R;
+
+import Balloons.BlueBalloon;
+import Balloons.RedBalloon;
+
 //**
 /* Game manages all objects in the game and is responsible for updating all states and rendering all
 /* object to the screen
@@ -23,7 +29,16 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
     private final Player player;
     private final RedBalloon redBalloon;
     private final BlueBalloon blueBalloon;
+
     private final RedBalloon[] round1;
+    private final RedBalloon[] round2;
+    private final RedBalloon[] round3a;
+    private final BlueBalloon[] round3b;
+
+    private Boolean round1ready=true;
+    private Boolean round2ready = false;
+    private Boolean round3ready = false;
+
     private GameLoop gameLoop;
     private Bitmap map;
     private Context context;
@@ -33,20 +48,22 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         super(context);
         this.context=context;
 
+
         SurfaceHolder surfaceHolder = getHolder();
         surfaceHolder.addCallback(this);
 
         gameLoop = new GameLoop(this, surfaceHolder);
 
-        round1 = new RedBalloon[5];
+        round1 = new RedBalloon[20];
+        round2 = new RedBalloon[30];
+        round3a = new RedBalloon[10];
+        round3b = new BlueBalloon[10];
 
-        for (int i=0; i<5;i ++)
-        {
-            round1[i] = new RedBalloon((int)(i+1)*4* (-getScreenWidth()/(50)),((int)(getScreenHeight()/2.45)),getScreenWidth()/60,context, BitmapFactory.decodeResource(context.getResources(), R.drawable.red_balloon));
-        }
+
+        AllBalloonsCreation();
 
         redBalloon = new RedBalloon(-getScreenWidth()/50,((int)(getScreenHeight()/2.45)),getScreenWidth()/60,context, BitmapFactory.decodeResource(context.getResources(), R.drawable.red_balloon));
-        blueBalloon = new BlueBalloon(-getScreenWidth()/5,((int)(getScreenHeight()/2.45)),getScreenWidth()/60,context, BitmapFactory.decodeResource(context.getResources(), R.drawable.blue_balloon));
+        blueBalloon = new BlueBalloon(-getScreenWidth()/50,((int)(getScreenHeight()/2.45)),getScreenWidth()/60,context, BitmapFactory.decodeResource(context.getResources(), R.drawable.blue_balloon));
 
         player = new Player(getContext(), 500,500,30);
 
@@ -96,16 +113,20 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         canvas.drawBitmap(map, 0, 0, null);
         drawUPS(canvas);
         drawFPS(canvas);
+        if(round1ready)
+            for(int i=0 ;i<20; i++) {
+                round1[i].draw(canvas);
+           }
+        if(round2ready)
+            for(int i=0 ;i<30; i++) {
+                round2[i].draw(canvas);
+            }
 
-        for(int i=0 ;i<5; i++) {
-            round1[i].draw(canvas);
-        }
 
 
         redBalloon.draw(canvas);
-        blueBalloon.draw(canvas);
+        //blueBalloon.draw(canvas);
         player.draw(canvas);
-
 
     }
 
@@ -131,12 +152,19 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         //Update game state
         player.update();
         redBalloon.update();
-        blueBalloon.update();
+       // blueBalloon.update();
 
-        for (int i=0; i<5;i ++)
-        {
-            round1[i].update();
-        }
+        if(round1ready)
+            for (int i=0; i<20;i ++)
+            {
+                round1[i].update();
+            }
+        if(round2ready)
+            for (int i=0; i<30;i ++)
+            {
+                round2[i].update();
+            }
+        round1check();
     }
     public static int getScreenWidth() {
         return Resources.getSystem().getDisplayMetrics().widthPixels;
@@ -144,6 +172,28 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
 
     public static int getScreenHeight() {
         return Resources.getSystem().getDisplayMetrics().heightPixels;
+    }
+    public void round1check()
+    {
+        //round 1
+        if(round1[19].getCenterPositionY()>getScreenHeight()-getScreenHeight()/20 && round2ready==false)
+                round2ready=true;
+        //Toast.makeText(context.getApplicationContext(), round1[9].getCenterPositionY() + " ", Toast.LENGTH_LONG).show();
+    }
+    public void AllBalloonsCreation(){
+        for (int i=0; i<20;i ++)
+        {
+            round1[i] = new RedBalloon((int)(i+1)*4* (-getScreenWidth()/(50)),((int)(getScreenHeight()/2.45)),getScreenWidth()/60,context, BitmapFactory.decodeResource(context.getResources(), R.drawable.red_balloon));
+        }
+        for (int i=0; i<30;i ++)
+        {
+            round2[i] = new RedBalloon((int)(i+1)*4* (-getScreenWidth()/(50)),((int)(getScreenHeight()/2.45)),getScreenWidth()/60,context, BitmapFactory.decodeResource(context.getResources(), R.drawable.red_balloon));
+        }
+        for (int i=0; i<10;i ++)
+        {
+            round3a[i] = new RedBalloon((int)(i+1)*4* (-getScreenWidth()/(50)),((int)(getScreenHeight()/2.45)),getScreenWidth()/60,context, BitmapFactory.decodeResource(context.getResources(), R.drawable.red_balloon));
+            round3b[i] = new BlueBalloon(((int)(i+1)*4* (-getScreenWidth()/(50))),((int)(getScreenHeight()/2.45)),getScreenWidth()/60,context, BitmapFactory.decodeResource(context.getResources(), R.drawable.blue_balloon));
+        }
     }
 
 }

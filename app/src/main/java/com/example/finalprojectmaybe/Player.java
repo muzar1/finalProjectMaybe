@@ -6,6 +6,8 @@ import android.graphics.Paint;
 
 import androidx.core.content.ContextCompat;
 
+import _GameMechanics.GameLoop;
+
 public class Player extends Circle{
     private Paint paint;
     private double positionX;
@@ -14,7 +16,7 @@ public class Player extends Circle{
     private double velocityX;
     private double velocityY;
     private double SPEED_PIXELS_PER_SECOND;
-    private double MAX_SPEED = SPEED_PIXELS_PER_SECOND /GameLoop.MAX_UPS;
+    private double MAX_SPEED = SPEED_PIXELS_PER_SECOND / GameLoop.MAX_UPS;
 
     public Player(Context context, double positionX, double positionY, double radius){
         super(positionX,positionY);
